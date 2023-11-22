@@ -1,5 +1,5 @@
 import pandas as pd
-data = pd.read_csv('loan_prediction.csv')
+data = pd.read_csv('s3://loanstatuspredictionusingmachinelearning/train_u6lujuX_CVtuZ9i.csv')
 # Loan_ID : Unique Loan ID
 
 # Gender : Male/ Female
