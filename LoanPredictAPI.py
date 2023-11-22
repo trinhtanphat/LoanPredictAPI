@@ -116,13 +116,12 @@ app = Flask(__name__)
 model = joblib.load('loan_status_predict')
 
 # Đường dẫn '/predict' sẽ xử lý cả POST và GET requests
-@app.route('/predict', methods=['POST', 'GET'])
+@app.route('/predict', methods=['POST'])
 def predict():
-    if request.method == 'POST':
-        data = request.get_json()
-    elif request.method == 'GET':
-        data = request.args.get('data')
-        data = json.loads(data)
+    data = request.get_json()
+
+    if data is None:
+        return jsonify(error="No JSON data provided"), 400
 
     df = pd.DataFrame(data, index=[0])
     result = model.predict(df)
@@ -132,7 +131,5 @@ def predict():
     else:
         return jsonify(prediction="Loan Not Approved")
 
-# ...
-
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0')
