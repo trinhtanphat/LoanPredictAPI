@@ -71,7 +71,7 @@ rs_svc=RandomizedSearchCV(svm.SVC(),
 rs_svc.fit(X,y)
 RandomForestClassifier()
 rf_grid={'n_estimators':np.arange(10,1000,10),
-  'max_features':[None, 'auto', 'sqrt', 'log2'],
+  'max_features':[None, 'sqrt', 'log2'],
  'max_depth':[None,3,5,10,20,30],
  'min_samples_split':[2,5,20,50,100],
  'min_samples_leaf':[1,2,5,10]
