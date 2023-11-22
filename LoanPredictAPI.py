@@ -1,5 +1,5 @@
 import pandas as pd
-data = pd.read_csv('https://github.com/trinhtanphat/LoanPredictAPI/blob/main/train_u6lujuX_CVtuZ9i.csv')
+data = pd.read_csv('https://loanpredictapibucket.s3.ap-southeast-2.amazonaws.com/train_u6lujuX_CVtuZ9i.csv')
 import numpy as np
 import joblib
 from flask import Flask, jsonify, request
