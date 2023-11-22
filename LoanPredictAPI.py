@@ -1,4 +1,5 @@
 import pandas as pd
+import json
 data = pd.read_csv('https://loanpredictapibucket.s3.ap-southeast-2.amazonaws.com/train_u6lujuX_CVtuZ9i.csv')
 import numpy as np
 import joblib
@@ -117,28 +118,21 @@ model = joblib.load('loan_status_predict')
 # Đường dẫn '/predict' sẽ xử lý cả POST và GET requests
 @app.route('/predict', methods=['POST', 'GET'])
 def predict():
-    # Kiểm tra nếu là POST request
     if request.method == 'POST':
         data = request.get_json()
-    # Nếu là GET request
     elif request.method == 'GET':
-        # Lấy tham số 'data' từ URL
         data = request.args.get('data')
-        
-        # Chuyển đổi chuỗi JSON thành đối tượng Python
         data = json.loads(data)
 
-    # Tạo DataFrame từ dữ liệu
     df = pd.DataFrame(data, index=[0])
-
-    # Dự đoán
     result = model.predict(df)
 
-    # Trả về kết quả dưới dạng JSON
     if result == 1:
         return jsonify(prediction="Loan Approved")
     else:
         return jsonify(prediction="Loan Not Approved")
+
+# ...
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5000)
