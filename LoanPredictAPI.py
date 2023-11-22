@@ -114,15 +114,31 @@ else:
 app = Flask(__name__)
 model = joblib.load('loan_status_predict')
 
-@app.route('/predict', methods=['POST'])
+# Đường dẫn '/predict' sẽ xử lý cả POST và GET requests
+@app.route('/predict', methods=['POST', 'GET'])
 def predict():
-    data = request.get_json()
+    # Kiểm tra nếu là POST request
+    if request.method == 'POST':
+        data = request.get_json()
+    # Nếu là GET request
+    elif request.method == 'GET':
+        # Lấy tham số 'data' từ URL
+        data = request.args.get('data')
+        
+        # Chuyển đổi chuỗi JSON thành đối tượng Python
+        data = json.loads(data)
+
+    # Tạo DataFrame từ dữ liệu
     df = pd.DataFrame(data, index=[0])
+
+    # Dự đoán
     result = model.predict(df)
+
+    # Trả về kết quả dưới dạng JSON
     if result == 1:
         return jsonify(prediction="Loan Approved")
     else:
         return jsonify(prediction="Loan Not Approved")
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0', port=5000)
