@@ -4,6 +4,7 @@ data = pd.read_csv('https://loanpredictapibucket.s3.ap-southeast-2.amazonaws.com
 import numpy as np
 import joblib
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 data = data.drop('Loan_ID',axis=1)
 columns = ['Gender','Dependents','LoanAmount','Loan_Amount_Term']
 data = data.dropna(subset=columns)
@@ -114,6 +115,7 @@ else:
     print("Loan Not Approved")
 app = Flask(__name__)
 model = joblib.load('loan_status_predict')
+CORS(app, resources={r"/predict": {"origins": ["https://hdbank.hutech.click", "https://ebanking.hutech.click"]}})
 
 # Đường dẫn '/predict' sẽ xử lý cả POST và GET requests
 @app.route('/predict', methods=['POST'])
